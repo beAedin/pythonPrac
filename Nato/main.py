@@ -1,11 +1,35 @@
-numbers = [1, 2, 3, 4, 5]
-new_numbers = [i+1 for i in numbers]
-print(new_numbers)
+import pandas
+student_dict = {
+    "student": ["Angela", "James", "Lily"],
+    "score": [56, 76, 98]
+}
 
-new_arr = [i*2 for i in range(1, 6)]
-print(new_arr)
+# Looping through dictionaries:
+for (key, value) in student_dict.items():
+    # Access key and value
+    pass
 
-names = ["Alex", "Beth", "Caroline", "Dave", "Eleanor", "Freddie"]
+student_data_frame = pandas.DataFrame(student_dict)
 
-short_name = [name.upper() for name in names if len(name) >= 5]
-print(short_name)
+# Loop through rows of a data frame
+for (index, row) in student_data_frame.iterrows():
+    # Access index and row
+    # Access row.student or row.score
+    pass
+
+# Keyword Method with iterrows()
+# {new_key:new_value for (index, row) in df.iterrows()}
+
+data = pandas.read_csv("nato_phonetic_alphabet.csv")
+
+
+# TODO 1. Create a dictionary in this format:
+nato = {row.letter: row.code for (index, row) in data.iterrows()}
+# print(nato)
+
+# TODO 2. Create a list of the phonetic code words from a word that the user inputs.
+
+input = input('Enter your name: ').upper()
+# list1 = [nato[i] for i in input if nato[i] == i]
+list = [nato[i] for i in input]
+print(list1)
