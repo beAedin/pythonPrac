@@ -32,4 +32,4 @@ nato = {row.letter: row.code for (index, row) in data.iterrows()}
 input = input('Enter your name: ').upper()
 # list1 = [nato[i] for i in input if nato[i] == i]
 list = [nato[i] for i in input]
-print(list1)
+print(list)
