@@ -2,6 +2,10 @@ from tkinter import *
 from tkinter import messagebox
 import pyperclip
 import random
+import json
+# JSON write : json.dump()
+# JSON read : json.load()
+# JSON update : json.update()
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 #Password Generator Project
@@ -32,11 +36,37 @@ def generator():
 
 
 
+def search():
+    web = input_website.get()
+
+    # SUCCESS
+    try:
+        with open("data.json", "r") as f:
+            data = json.load(f)
+            
+            
+    except FileNotFoundError:
+        # ERROR
+        messagebox.showerror(title=web, message="No Data File Found.")
+    else:
+        if web in data:
+                email = data[web]["email"]
+                pw = data[web]["pw"]
+                messagebox.showinfo(title=web, message=f"Email: {email}\nPassword: {pw}")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {web} exists.")
+
+
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     web = input_website.get()
     email = input_email.get()
     pw = input_pw.get()
+    new_data = {web: {
+        "email": email,
+        "pw": pw
+    }}
 
     if len(web) == 0 or len(pw) == 0:
         messagebox.showinfo(title="Oops", message="Please don't leave any fields empty!")
@@ -47,14 +77,25 @@ def save():
         
 
         if is_ok:
-            with open("data.txt", "a") as f:
-                data = f"{web} | {email} | {pw}\n"
-                f.write(data)
-
-
-            # Clear
-            input_website.delete(0, END)
-            input_pw.delete(0, END)
+            try :
+                with open("data.json", "r") as f:
+                    # data = f"{web} | {email} | {pw}\n"
+                    # f.write(data)
+                    
+                    # Reading old data
+                    data = json.load(f)
+                    
+            except FileNotFoundError:
+                with open("data.json", "w") as f:
+                     # Saving updated data
+                    json.dump(data, f, indent=4)
+            else:
+                # Updating old data with new data
+                data.update(new_data)
+            finally:
+                # Clear
+                input_website.delete(0, END)
+                input_pw.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -78,9 +119,9 @@ l_pw = Label(text="Password:")
 l_pw.grid(column=0, row=3)
 
 # Entry
-input_website = Entry(width=37)
+input_website = Entry(width=30)
 input_website.focus()
-input_website.grid(column=1, row=1, columnspan=2)
+input_website.grid(column=1, row=1)
 
 input_email = Entry(width=37)
 input_email.insert(0, "panda01com@naver.com")
@@ -90,6 +131,9 @@ input_pw = Entry(width=29)
 input_pw.grid(column=1, row=3)
 
 # Button
+btn_search = Button(text="Search", command=search)
+btn_search.grid(column=2, row=1)
+
 btn_generator = Button(text="Generate", command=generator)
 btn_generator.grid(column=2, row=3)
 
