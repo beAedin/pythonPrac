@@ -30,5 +30,10 @@ print(a_first.get("href"))
 upvote = soup.select_one(selector=".score")
 # print(upvote.getText())
 
-a_upvotes = [score.getText() for score in soup.find_all(name="span", class_="score")]
-print(a_upvotes)
+# get score from list
+all_upvotes = [int(score.getText().split()[0]) for score in soup.find_all(name="span", class_="score")]
+max_upvote = max(all_upvotes)
+# print(max_upvote)
+largest_index = all_upvotes.index(max_upvote)
+
+print(a_links[largest_index])
