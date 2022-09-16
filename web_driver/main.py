@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from time import sleep
 
 chrome_driver_path = "C:/Users/Aedin/Documents/ChromeDriver/chromedriver.exe"
 
@@ -23,6 +24,22 @@ driver.find_element(By.ID, "UserID").send_keys("21111505")
 driver.find_element(By.XPATH, '//*[@id="Kakao_LoginMyform"]/section/div[2]/div/label').click()
 driver.find_element(By.XPATH, '//*[@id="Kakao_LoginMyform"]/section/div[3]/a').click()
 
+while True:
+    sleep(30000)
+    displayOk = driver.find_element(By.XPATH, '/html/body/div/div[2]/button').isDisplayed()
+
+    driver.find_element(By.XPATH, '/html/body/div/div[2]/button').click()
+
+    if displayOk:
+        break
+
+for cookie in driver.get_cookies():
+    c = {cookie['name'] : cookie['value']}
+
+
+driver.quit()
+
+    
 
 #driver.close()
 #driver.quit()
